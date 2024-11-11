@@ -707,9 +707,12 @@ uint8_t BDali::compare() {
   while(retry>0) {
     //compare is true if we received any activity on the bus as reply.
     //sometimes the reply is not registered... so only accept retry times 'no reply' as a real false compare
-    int16_t rv = GetQuery(DA_EXT_COMPARE,0x00);
-    if(rv == -STATUS_FRAME_ERROR) return 1;
-    if(rv == -STATUS_VALID) return 1;
+    int8_t rv = GetQuery(DA_EXT_COMPARE,0x00);
+// The GetQuery(...) method does NOT include the status information in its uin8_t (NOT int16_t) return value
+// until it does the following two lines are dead code - which likely means this code is currently not fully
+// operative:
+//    if(rv == -STATUS_FRAME_ERROR) return 1;
+//    if(rv == -STATUS_VALID) return 1;
     if(rv == 0xFF) return 1;
 
     retry--;
